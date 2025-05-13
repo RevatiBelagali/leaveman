@@ -1,14 +1,14 @@
 <?php include('../includes/db.php'); ?>
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $employee_id = 1; // Assume logged-in employee with ID 1
+    $emp_id = 1; // Assume logged-in employee ID
     $leave_type = $_POST['leave_type'];
     $start_date = $_POST['start_date'];
     $end_date = $_POST['end_date'];
     $reason = $_POST['reason'];
 
-    $sql = "INSERT INTO leaves (employee_id, leave_type, start_date, end_date, reason, status) 
-            VALUES ($employee_id, '$leave_type', '$start_date', '$end_date', '$reason', 'pending')";
+    $sql = "INSERT INTO employee_leave (emp_id, leave_type, from_date, to_date, reason, status)
+            VALUES ($emp_id, '$leave_type', '$start_date', '$end_date', '$reason', 'Pending')";
     if ($conn->query($sql) === TRUE) {
         echo "Leave request submitted successfully!";
     } else {
@@ -17,10 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Request Leave</title>
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 </head>
@@ -29,26 +27,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Request Leave</h2>
         <form method="POST">
             <div class="form-group">
-                <label for="leave_type">Leave Type</label>
+                <label>Leave Type</label>
                 <select name="leave_type" class="form-control">
-                    <option value="sick">Sick</option>
-                    <option value="vacation">Vacation</option>
-                    <option value="personal">Personal</option>
+                    <option value="Sick">Sick</option>
+                    <option value="Vacation">Vacation</option>
+                    <option value="Personal">Personal</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="start_date">Start Date</label>
+                <label>Start Date</label>
                 <input type="date" name="start_date" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="end_date">End Date</label>
+                <label>End Date</label>
                 <input type="date" name="end_date" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="reason">Reason</label>
+                <label>Reason</label>
                 <textarea name="reason" class="form-control" required></textarea>
             </div>
-            <button type="submit" class="btn btn-primary">Request Leave</button>
+            <button type="submit" class="btn btn-primary">Submit Leave</button>
         </form>
     </div>
 </body>

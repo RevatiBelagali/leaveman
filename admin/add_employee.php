@@ -3,9 +3,10 @@
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Encrypt password
+    $password = md5($_POST['password']); // Match with DB MD5, or use PASSWORD_DEFAULT if bcrypt
 
-    $sql = "INSERT INTO employees (name, email, password) VALUES ('$name', '$email', '$password')";
+    $sql = "INSERT INTO employee (emp_name, emp_email, emp_password, emp_dept)
+            VALUES ('$name', '$email', '$password', 'General')";
     if ($conn->query($sql) === TRUE) {
         echo "New employee added successfully!";
     } else {
@@ -14,10 +15,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Employee</title>
     <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
 </head>
@@ -26,16 +25,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <h2>Add New Employee</h2>
         <form method="POST">
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" name="name" required>
+                <label>Name</label>
+                <input type="text" name="name" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" name="email" required>
+                <label>Email</label>
+                <input type="email" name="email" class="form-control" required>
             </div>
             <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" name="password" required>
+                <label>Password</label>
+                <input type="password" name="password" class="form-control" required>
             </div>
             <button type="submit" class="btn btn-primary">Add Employee</button>
         </form>
