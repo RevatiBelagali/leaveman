@@ -1,7 +1,14 @@
 <?php
-$con = mysqli_connect("localhost", "leavemanager_user", "Shreyas@123", "leaveman");
+$servername = "localhost";
+$username = "leavemanager_user";
+$password = "Shreyas@123";
+$dbname = "leaveman";
 
-if (!$con) {
-    die("Connection failed: " . mysqli_connect_error());
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
