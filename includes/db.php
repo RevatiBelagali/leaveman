@@ -1,8 +1,8 @@
 <?php
 $servername = "localhost";
 $username = "leavemanager_user";
-$password = "Shreyas@123";
-$dbname = "leaveman";
+$password = "shreyas";  // Make sure this matches the password in the SQL file
+$dbname = "leavemanager";  // Use the correct database name
 
 // Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
