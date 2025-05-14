@@ -1,4 +1,3 @@
-<!-- /var/www/html/leavemanager/index.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,6 +28,7 @@
     <h2 class="mb-4">Welcome to Leave Manager</h2>
     <a href="admin/login.php" class="btn btn-primary">Admin Login</a>
     <a href="employee/login.php" class="btn btn-success">Employee Login</a>
+    <a href="employee/register.php" class="btn btn-warning">New Employee? Register</a>
   </div>
 </body>
 </html>
