@@ -34,27 +34,68 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background: #f8f8f8;
+      background: #121212; /* Dark background */
+      color: white; /* White text for contrast */
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
+
     .login-box {
-      background: white;
+      background: #333; /* Dark background for the form */
       padding: 30px;
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       width: 400px;
+    }
+
+    .login-box h3 {
+      color: #f1f1f1; /* Light heading */
+    }
+
+    .form-label {
+      color: #f1f1f1; /* Light labels */
+    }
+
+    .form-control {
+      background: #444; /* Dark input fields */
+      color: white; /* White text inside input fields */
+      border: 1px solid #555; /* Slightly lighter border */
+    }
+
+    .form-control:focus {
+      background-color: #555; /* Darker focus state */
+      border-color: #008c76; /* Highlight border on focus */
+    }
+
+    .btn {
+      background-color: #008c76; /* Attractive button color */
+      border: none;
+      padding: 12px;
+      width: 100%;
+    }
+
+    .btn:hover {
+      background-color: #006f5f; /* Darker shade on hover */
+    }
+
+    .alert {
+      background-color: #ff4d4d; /* Red alert box */
+      color: white;
+      border-radius: 10px;
+      margin-bottom: 15px;
     }
   </style>
 </head>
 <body>
   <div class="login-box">
     <h3 class="text-center mb-4">Employee Login</h3>
+    
     <?php if (isset($error_message)): ?>
         <div class="alert alert-danger"><?= $error_message ?></div>
     <?php endif; ?>
+    
     <form method="POST" action="">
       <div class="mb-3">
         <label class="form-label">Email / Username</label>
@@ -64,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label class="form-label">Password</label>
         <input type="password" name="password" class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-success w-100">Login</button>
+      <button type="submit" class="btn">Login</button>
     </form>
   </div>
 </body>

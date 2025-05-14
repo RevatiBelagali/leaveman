@@ -40,18 +40,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <style>
     body {
-      background: #f8f9fa;
+      background: #121212;
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
     .card {
+      background: #1c1c1c;
       padding: 30px;
       border-radius: 15px;
       width: 100%;
       max-width: 450px;
       box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .btn {
+      background-color: #007bff;
+      color: white;
+      width: 100%;
+      margin-top: 15px;
+      border: none;
+      padding: 12px;
+    }
+    .btn:hover {
+      background-color: #0056b3;
+    }
+    .form-label {
+      font-weight: bold;
+    }
+    .alert {
+      margin-bottom: 15px;
+    }
+    p {
+      color: #ccc;
     }
   </style>
 </head>
@@ -80,8 +102,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <label for="password" class="form-label">Password</label>
         <input type="password" name="password" class="form-control" required>
       </div>
-      <button type="submit" class="btn btn-success w-100">Register</button>
-      <p class="mt-3 text-center">Already registered? <a href="login.php">Login here</a></p>
+      <button type="submit" class="btn">Register</button>
+      <p class="mt-3 text-center">Already registered? <a href="login.php" class="text-white">Login here</a></p>
     </form>
   </div>
 </body>

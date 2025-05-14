@@ -1,65 +1,31 @@
-<!-- /var/www/html/leavemanager/admin/dashboard.php -->
-<?php
-session_start();
-require_once "../includes/db.php";
-?>
-
+<?php include('../includes/db.php'); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Leave Manager</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <style>
-    body {
-      background-color: #f4f4f4;
-    }
-    .container {
-      margin-top: 60px;
-    }
-    .card {
-      border-radius: 15px;
-    }
-  </style>
+  <link rel="stylesheet" href="../includes/styles.css">
 </head>
 <body>
-  <nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Admin Dashboard</a>
-      <span class="navbar-text text-white">Welcome, Admin</span>
+  <nav class="navbar navbar-expand-lg">
+    <a class="navbar-brand" href="#">Leave Manager</a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="manage_leaves.php">Manage Leaves</a></li>
+        <li class="nav-item"><a class="nav-link" href="add_employee.php">Add Employee</a></li>
+        <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
+      </ul>
     </div>
   </nav>
-
-  <div class="container">
-    <div class="row g-4">
-      <div class="col-md-4">
-        <div class="card text-bg-primary">
-          <div class="card-body">
-            <h5 class="card-title">Manage Leaves</h5>
-            <p class="card-text">Review and approve/reject leave requests.</p>
-            <a href="manage_leaves.php" class="btn btn-light">Go</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card text-bg-success">
-          <div class="card-body">
-            <h5 class="card-title">Add Employee</h5>
-            <p class="card-text">Register a new employee into the system.</p>
-            <a href="add_employee.php" class="btn btn-light">Add</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <div class="card text-bg-warning">
-          <div class="card-body">
-            <h5 class="card-title">View Employees</h5>
-            <p class="card-text">See all registered employees (optional).</p>
-            <a href="#" class="btn btn-light disabled">Coming Soon</a>
-          </div>
-        </div>
+  
+  <div class="container mt-5">
+    <div class="card">
+      <h5 class="card-header">Admin Dashboard</h5>
+      <div class="card-body">
+        <p class="card-text">Welcome, Admin! You can manage employee leaves and add new employees from here.</p>
+        <a href="manage_leaves.php" class="btn btn-primary">View Leave Requests</a>
       </div>
     </div>
   </div>
