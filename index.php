@@ -1,114 +1,63 @@
-<?php
-session_start();
-include('../includes/db.php');
-
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $email = $_POST['email'];
-    $password = md5($_POST['password']); // ❗Note: MD5 is outdated — see note below
-
-    $stmt = $conn->prepare("SELECT * FROM employee WHERE emp_email = ? AND emp_password = ?");
-    $stmt->bind_param("ss", $email, $password);
-    $stmt->execute();
-
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
-
-    if ($user) {
-        $_SESSION['emp_id'] = $user['id'];
-        header("Location: dashboard.php");
-        exit();
-    } else {
-        $error = "Invalid credentials";
-    }
-}
-?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Employee Login</title>
+    <meta charset="UTF-8" />
+    <title>Leave Manager</title>
     <style>
         body {
-            background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+            background: #121212;
             color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
+            font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             margin: 0;
-        }
-        .box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 40px 30px;
-            width: 360px;
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            padding: 0 20px;
             text-align: center;
         }
-        h2 {
-            margin-bottom: 30px;
+        h1 {
+            margin-bottom: 50px;
             font-weight: 700;
-            letter-spacing: 1.2px;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(0,123,255,0.7);
         }
-        input {
-            width: 100%;
-            padding: 14px 12px;
-            margin: 10px 0 20px 0;
-            border-radius: 6px;
-            border: none;
-            outline: none;
-            font-size: 16px;
-            transition: 0.3s ease;
-        }
-        input:focus {
-            box-shadow: 0 0 8px #00bfff;
-            background: rgba(255,255,255,0.15);
-            color: #fff;
-        }
-        button {
-            width: 100%;
-            padding: 14px 0;
+        .btn {
+            display: inline-block;
+            margin: 12px;
+            padding: 14px 36px;
             font-size: 18px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
             font-weight: 600;
-            transition: background-color 0.3s ease;
             color: white;
-        }
-        .login-btn {
             background: #007bff;
-            margin-bottom: 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.5);
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+            user-select: none;
         }
-        .login-btn:hover {
+        .btn:hover {
             background: #0056b3;
+            box-shadow: 0 6px 20px rgba(0, 86, 179, 0.7);
         }
-        .back-btn {
-            background: #6c757d;
-        }
-        .back-btn:hover {
-            background: #5a6268;
-        }
-        .error {
-            color: #ff6b6b;
-            margin-top: 15px;
-            font-weight: 600;
+        /* Responsive for smaller screens */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            .btn {
+                padding: 12px 28px;
+                font-size: 16px;
+                margin: 10px 8px;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h2>Employee Login</h2>
-        <form method="post">
-            <input type="email" name="email" placeholder="Email" required />
-            <input type="password" name="password" placeholder="Password" required />
-            <button type="submit" class="login-btn">Login</button>
-        </form>
-        <form action="file:///C:/Users/revat/Desktop/leavemanager/index.php" method="get">
-            <button type="submit" class="back-btn">Back to Home</button>
-        </form>
-        <?php if (isset($error)) echo "<p class='error'>$error</p>"; ?>
-    </div>
+    <h1>Welcome to Leave Management System</h1>
+    <a href="admin/login.php" class="btn">Admin Login</a>
+    <a href="employee/login.php" class="btn">Employee Login</a>
+    <a href="employee/register.php" class="btn">Register Employee</a>
 </body>
 </html>
