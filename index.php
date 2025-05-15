@@ -55,7 +55,7 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to Leave Management System</h1>
+    <h1>Welcome to LeaveManager</h1>
     <a href="admin/login.php" class="btn">Admin Login</a>
     <a href="employee/login.php" class="btn">Employee Login</a>
     <a href="employee/register.php" class="btn">Register Employee</a>
