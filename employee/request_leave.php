@@ -4,12 +4,13 @@ include('../includes/db.php');
 include('../includes/functions.php');
 
 // Check if the employee is logged in
-if (!isset($_SESSION['employee_id'])) {
+if (!isset($_SESSION['emp_id'])) {
     header('Location: login.php');
     exit();
 }
 
-$employee_id = $_SESSION['employee_id'];
+$employee_id = $_SESSION['emp_id'];
+
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $leave_type = $_POST['leave_type'];
