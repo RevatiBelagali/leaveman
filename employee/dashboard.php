@@ -1,6 +1,6 @@
 <?php
 session_start();
-include '../db_connect.php';
+include '../db.php';
 include '../functions.php';
 
 if (!isset($_SESSION['emp_id'])) {
