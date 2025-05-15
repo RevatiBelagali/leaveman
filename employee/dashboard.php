@@ -1,7 +1,8 @@
 <?php
 session_start();
-include '../db.php';
-include '../functions.php';
+include('../includes/db.php');
+
+include '../includes/functions.php';
 
 if (!isset($_SESSION['emp_id'])) {
     header("Location: login.php");

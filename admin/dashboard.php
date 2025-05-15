@@ -4,8 +4,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
     header("Location: login.php");
     exit();
 }
-include '../db.php';
-include '../functions.php';
+include('../includes/db.php');
+
+include '../includes/functions.php';
 
 $employees = getAllEmployees();
 ?>

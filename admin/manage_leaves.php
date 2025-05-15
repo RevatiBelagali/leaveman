@@ -5,8 +5,9 @@ if (!isset($_SESSION['admin_logged_in'])) {
     exit();
 }
 
-include '../db.php';
-include '../functions.php';
+include('../includes/db.php');
+
+include '../includes/functions.php';
 
 $leaveRequests = getLeaveRequests();
 

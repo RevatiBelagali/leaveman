@@ -5,7 +5,8 @@ if (!isset($_SESSION['admin_logged_in'])) {
     exit();
 }
 
-include '../db.php';
+include('../includes/db.php');
+
 
 $success = '';
 $error = '';
