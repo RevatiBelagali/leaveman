@@ -7,7 +7,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
 
 include('../includes/db.php');
 
-
 $success = '';
 $error = '';
 
@@ -46,6 +45,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             padding: 20px;
             border-radius: 8px;
         }
+        .back-button {
+            margin-bottom: 20px;
+        }
+        .back-button a {
+            background-color: #444;
+            color: #00e6e6;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+        .back-button a:hover {
+            background-color: #333;
+        }
         input {
             width: 100%;
             padding: 10px;
@@ -77,6 +92,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
+        <div class="back-button">
+            <a href="dashboard.php">← Back to Dashboard</a>
+        </div>
         <h2>Update Employee Details</h2>
         <form method="post">
             <input type="number" name="emp_id" placeholder="Employee ID" required />

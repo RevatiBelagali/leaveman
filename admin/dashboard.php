@@ -1,67 +1,61 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ../index.php");
     exit();
 }
-include('../includes/db.php');
-
-include '../includes/functions.php';
-
+require_once '../includes/db.php';
+require_once '../includes/functions.php';
 $employees = getAllEmployees();
+$leave_requests = getLeaveRequests();
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8" />
-<title>Admin Dashboard</title>
-<style>
-    body { background: #121212; color: white; font-family: Arial, sans-serif; margin: 0; }
-    header { padding: 20px; background: #1f1f1f; text-align: center; font-size: 24px; }
-    table { width: 90%; margin: 20px auto; border-collapse: collapse; }
-    th, td { padding: 12px; border: 1px solid #333; text-align: left; }
-    th { background: #222; }
-    tr:nth-child(even) { background: #1a1a1a; }
-    a.button { padding: 8px 12px; background: #007bff; color: white; text-decoration: none; border-radius: 5px; }
-    a.button:hover { background: #0056b3; }
-</style>
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
 </head>
 <body>
-<header>Admin Dashboard</header>
+ <div class="navbar">
+        <div class="logo">Admin Panel</div>
+        <div class="nav-links">
+            <a href="add_employee.php">➕ Add Employee</a>
+            <a href="manage_leaves.php">📋 Manage Leaves</a>
+            <a href="logout.php">🚪 Logout</a>
+        </div>
+    </div>
 
-<div style="width: 90%; margin: auto; text-align: right;">
-    <a href="add_employee.php" class="button">Add Employee</a>
-    <a href="manage_leaves.php" class="button">Manage Leaves</a>
-    <a href="logout.php" class="button" style="background:#b33030;">Logout</a>
+<div class="container">
+    <h2>Welcome, Admin</h2>
+
+    <h3>All Employees</h3>
+    <table border="1" width="100%">
+        <tr><th>ID</th><th>Name</th><th>Email</th><th>Dept</th><th>Leave Balance</th></tr>
+        <?php foreach ($employees as $emp): ?>
+        <tr>
+            <td><?= $emp['id'] ?></td>
+            <td><?= $emp['emp_name'] ?></td>
+            <td><?= $emp['emp_email'] ?></td>
+            <td><?= $emp['emp_dept'] ?></td>
+            <td><?= $emp['leave_balance'] ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+
+    <h3>Pending Leave Requests</h3>
+    <table border="1" width="100%">
+        <tr><th>Emp Name</th><th>Type</th><th>From</th><th>To</th><th>Status</th></tr>
+        <?php foreach ($leave_requests as $leave): ?>
+        <tr>
+            <td><?= $leave['emp_name'] ?></td>
+            <td><?= $leave['leave_type'] ?></td>
+            <td><?= $leave['from_date'] ?></td>
+            <td><?= $leave['to_date'] ?></td>
+            <td><?= $leave['status'] ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
 </div>
-
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Department</th>
-            <th>Leave Balance</th>
-            <th>Created At</th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-    <?php foreach ($employees as $emp): ?>
-        <tr>
-            <td><?= htmlspecialchars($emp['id']) ?></td>
-            <td><?= htmlspecialchars($emp['emp_name']) ?></td>
-            <td><?= htmlspecialchars($emp['emp_email']) ?></td>
-            <td><?= htmlspecialchars($emp['emp_dept']) ?></td>
-            <td><?= htmlspecialchars($emp['leave_balance']) ?></td>
-            <td><?= htmlspecialchars($emp['created_at']) ?></td>
-            <td><a href="update_employee.php?id=<?= $emp['id'] ?>" class="button">Edit</a></td>
-        </tr>
-    <?php endforeach; ?>
-    </tbody>
-</table>
-
 </body>
 </html>

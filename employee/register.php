@@ -1,7 +1,6 @@
 <?php
 include('../includes/db.php');
 
-
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $name = trim($_POST['emp_name']);
     $email = trim($_POST['emp_email']);
@@ -43,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             border-radius: 5px;
             border: none;
         }
-        button {
+        button, .nav-btn {
             background: #007bff;
             color: white;
             padding: 12px;
@@ -51,8 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin-top: 10px;
+            font-weight: bold;
         }
-        button:hover {
+        button:hover, .nav-btn:hover {
             background: #0056b3;
         }
         .msg {
@@ -74,6 +78,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <input type="text" name="emp_dept" placeholder="Department" required />
             <button type="submit">Register</button>
         </form>
+
+        <!-- ✅ Navigation Buttons -->
+        <a class="nav-btn" href="../index.php">← Back to Home</a>
+        <a class="nav-btn" href="login.php">🔐 Go to Login</a>
+
         <div class="msg <?= isset($error) ? 'error' : '' ?>">
             <?php if (isset($success)) echo $success; ?>
             <?php if (isset($error)) echo $error; ?>

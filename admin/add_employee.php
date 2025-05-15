@@ -1,118 +1,135 @@
 <?php
 session_start();
-if (!isset($_SESSION['admin_logged_in'])) {
-    header("Location: login.php");
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: ../index.php");
     exit();
 }
+require_once '../includes/db.php';
 
-include '../db.php';
+$message = '';
 
-$success = '';
-$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $name = $_POST['emp_name'];
+    $email = $_POST['emp_email'];
+    $password = password_hash($_POST['emp_password'], PASSWORD_DEFAULT);
+    $dept = $_POST['emp_dept'];
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $name = trim($_POST['emp_name']);
-    $email = trim($_POST['emp_email']);
-    $password = md5(trim($_POST['emp_password'])); // Note: For production use password_hash()
-    $dept = trim($_POST['emp_dept']);
-    $leave_balance = 10; // Default leave balance
+    $stmt = $conn->prepare("INSERT INTO employee (emp_name, emp_email, emp_password, emp_dept) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("ssss", $name, $email, $password, $dept);
 
-    // Check if email already exists
-    $stmt = $conn->prepare("SELECT id FROM employee WHERE emp_email = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $error = "Employee with this email already exists.";
+    if ($stmt->execute()) {
+        $message = "Employee added successfully.";
     } else {
-        // Insert new employee
-        $stmt = $conn->prepare("INSERT INTO employee (emp_name, emp_email, emp_password, emp_dept, leave_balance) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssi", $name, $email, $password, $dept, $leave_balance);
-
-        if ($stmt->execute()) {
-            $success = "Employee added successfully.";
-        } else {
-            $error = "Failed to add employee.";
-        }
+        $message = "Error: " . $stmt->error;
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
     <title>Add Employee</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
     <style>
         body {
             background: #121212;
-            color: #fff;
+            color: white;
             font-family: Arial, sans-serif;
         }
+        .navbar {
+            background-color: #222;
+            padding: 10px;
+        }
+        .navbar a {
+            color: #00e6e6;
+            margin-right: 15px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .navbar a:hover {
+            text-decoration: underline;
+        }
         .container {
-            width: 400px;
-            margin: 60px auto;
-            background-color: #1f1f1f;
-            padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            max-width: 500px;
+            margin: 30px auto;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 8px;
         }
-        h2 {
-            text-align: center;
-            color: #00bcd4;
+        .back-button {
+            margin-bottom: 15px;
         }
-        input, select {
+        .back-button a {
+            background-color: #444;
+            color: #00e6e6;
+            padding: 10px 16px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        .back-button a:hover {
+            background-color: #333;
+        }
+        input, button {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
+            padding: 10px;
+            margin-top: 8px;
+            margin-bottom: 16px;
             border: none;
-            border-radius: 5px;
-            background: #333;
-            color: white;
-        }
-        input::placeholder {
-            color: #aaa;
+            border-radius: 4px;
         }
         button {
-            background-color: #00bcd4;
-            color: #fff;
-            border: none;
-            padding: 12px;
-            border-radius: 5px;
+            background-color: #ffc107;
+            color: black;
+            font-weight: bold;
             cursor: pointer;
-            width: 100%;
-            font-size: 16px;
         }
         button:hover {
-            background-color: #0097a7;
+            background-color: #e0a800;
         }
-        .msg {
-            margin-top: 15px;
-            text-align: center;
-        }
-        .success {
+        p {
+            margin-top: -10px;
+            margin-bottom: 10px;
             color: #4CAF50;
-        }
-        .error {
-            color: #f44336;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>Add New Employee</h2>
-        <form method="POST">
-            <input type="text" name="emp_name" placeholder="Full Name" required />
-            <input type="email" name="emp_email" placeholder="Email" required />
-            <input type="password" name="emp_password" placeholder="Password" required />
-            <input type="text" name="emp_dept" placeholder="Department" required />
-            <button type="submit">Add Employee</button>
-        </form>
-        <div class="msg">
-            <?php if (!empty($success)) echo "<div class='success'>$success</div>"; ?>
-            <?php if (!empty($error)) echo "<div class='error'>$error</div>"; ?>
-        </div>
+
+<div class="navbar">
+    <a href="dashboard.php">Dashboard</a>
+    <a href="logout.php">Logout</a>
+</div>
+
+<div class="container">
+    <div class="back-button">
+        <a href="dashboard.php">← Back to Dashboard</a>
     </div>
+
+    <h2>Add Employee</h2>
+    
+    <?php if ($message): ?>
+        <p><?= $message ?></p>
+    <?php endif; ?>
+    
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="emp_name" required>
+        
+        <label>Email:</label>
+        <input type="email" name="emp_email" required>
+        
+        <label>Password:</label>
+        <input type="password" name="emp_password" required>
+        
+        <label>Department:</label>
+        <input type="text" name="emp_dept" required>
+        
+        <button type="submit">Add Employee</button>
+    </form>
+</div>
+
 </body>
 </html>

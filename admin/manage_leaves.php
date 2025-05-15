@@ -6,7 +6,6 @@ if (!isset($_SESSION['admin_logged_in'])) {
 }
 
 include('../includes/db.php');
-
 include '../includes/functions.php';
 
 $leaveRequests = getLeaveRequests();
@@ -35,16 +34,39 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             background: #121212;
             color: white;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .back-button {
+            text-align: left;
+            width: 90%;
+            margin: 20px auto 0;
+        }
+        .back-button a {
+            background-color: #444;
+            color: #00e6e6;
+            padding: 10px 18px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            display: inline-block;
+            transition: background 0.3s ease;
+        }
+        .back-button a:hover {
+            background-color: #333;
         }
         h2 {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
         }
         table {
             width: 90%;
             margin: 20px auto;
             border-collapse: collapse;
             background: #1e1e1e;
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
         th, td {
             padding: 12px;
@@ -53,6 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         th {
             background: #222;
+            color: #00bcd4;
+        }
+        tr:nth-child(even) {
+            background: #1a1a1a;
         }
         form {
             display: inline;
@@ -65,6 +91,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: bold;
         }
         button.reject {
             background: #dc3545;
@@ -75,6 +102,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </style>
 </head>
 <body>
+
+    <div class="back-button">
+        <a href="dashboard.php">← Back to Dashboard</a>
+    </div>
+
     <h2>Manage Leave Requests</h2>
     <table>
         <tr>
