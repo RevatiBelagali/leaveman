@@ -1,33 +1,32 @@
-<?php include('../includes/db.php'); ?>
+<?php
+session_start();
+include('../includes/db.php');
+
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: login.php');
+    exit();
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
   <title>Admin Dashboard - Leave Manager</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../includes/styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body { background: #121212; color: white; }
+    .container { margin-top: 50px; max-width: 600px; }
+    .btn { margin-bottom: 15px; width: 100%; }
+  </style>
 </head>
 <body>
-  <nav class="navbar navbar-expand-lg">
-    <a class="navbar-brand" href="#">Leave Manager</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link" href="manage_leaves.php">Manage Leaves</a></li>
-        <li class="nav-item"><a class="nav-link" href="add_employee.php">Add Employee</a></li>
-        <li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>
-      </ul>
-    </div>
-  </nav>
-  
-  <div class="container mt-5">
-    <div class="card">
-      <h5 class="card-header">Admin Dashboard</h5>
-      <div class="card-body">
-        <p class="card-text">Welcome, Admin! You can manage employee leaves and add new employees from here.</p>
-        <a href="manage_leaves.php" class="btn btn-primary">View Leave Requests</a>
-      </div>
-    </div>
+  <div class="container">
+    <h2 class="mb-4 text-center">Admin Dashboard</h2>
+
+    <a href="add_employee.php" class="btn btn-primary">Add New Employee</a>
+    <a href="update_employee.php" class="btn btn-warning">Update Employee Details</a>
+    <a href="manage_leaves.php" class="btn btn-success">View Leave Requests</a>
   </div>
 </body>
 </html>

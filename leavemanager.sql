@@ -26,8 +26,10 @@ CREATE TABLE IF NOT EXISTS employee (
     emp_name VARCHAR(100) NOT NULL,
     emp_email VARCHAR(100) NOT NULL,
     emp_password VARCHAR(255) NOT NULL,
-    emp_dept VARCHAR(100) NOT NULL
+    emp_dept VARCHAR(100) NOT NULL,
+    leave_balance INT DEFAULT 10
 );
+
 
 -- Create Leave Table
 CREATE TABLE IF NOT EXISTS employee_leave (
