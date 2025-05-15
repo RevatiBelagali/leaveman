@@ -1,113 +1,102 @@
-<?php 
+<?php
 session_start();
-include('../includes/db.php');
-include('../includes/functions.php');
+include '../db_connect.php';
+include '../functions.php';
 
-// Check if employee is logged in
 if (!isset($_SESSION['emp_id'])) {
-    header('Location: login.php');
+    header("Location: login.php");
     exit();
 }
 
-$employee_id = $_SESSION['emp_id'];
+$emp_id = $_SESSION['emp_id'];
 
-// Fetch current leave balance from DB
-$emp_data = $conn->query("SELECT leave_balance FROM employee WHERE id = $employee_id")->fetch_assoc();
-$current_balance = $emp_data['leave_balance'] ?? 0;
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $type = $_POST['leave_type'];
+    $from = $_POST['from_date'];
+    $to = $_POST['to_date'];
+    $reason = trim($_POST['reason']);
+    $days = (strtotime($to) - strtotime($from)) / 86400 + 1;
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $leave_type = $_POST['leave_type'];
-    $from_date = $_POST['from_date'];
-    $to_date = $_POST['to_date'];
-    $reason = $_POST['reason'];
-
-    // Calculate number of days requested (inclusive)
-    $from = new DateTime($from_date);
-    $to = new DateTime($to_date);
-    $interval = $from->diff($to);
-    $days_requested = $interval->days + 1;
-
-    if ($days_requested > $current_balance) {
-        echo "<script>
-            alert('Insufficient leave balance. You have only $current_balance day(s) left.');
-            window.location.href = 'request_leave.php';
-        </script>";
-        exit();
+    if ($days <= 0) {
+        $error = "Invalid date range.";
+    } elseif (!canApplyLeave($emp_id, $days)) {
+        $error = "Insufficient leave balance.";
     } else {
-        // Insert leave request (status defaults to 'Pending')
-        $stmt = $conn->prepare("INSERT INTO employee_leave (emp_id, leave_type, from_date, to_date, reason) VALUES (?, ?, ?, ?, ?)");
-        $stmt->bind_param('issss', $employee_id, $leave_type, $from_date, $to_date, $reason);
-        $stmt->execute();
+        $stmt = $conn->prepare("INSERT INTO employee_leave (emp_id, leave_type, from_date, to_date, leave_days, reason) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->bind_param("isssis", $emp_id, $type, $from, $to, $days, $reason);
 
-        echo "<script>
-            alert('Leave request submitted successfully!');
-            window.location.href = 'dashboard.php';
-        </script>";
-        exit();
+        if ($stmt->execute()) {
+            $success = "✅ Leave request submitted successfully.";
+        } else {
+            $error = "❌ Error submitting leave request.";
+        }
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Request Leave - Leave Manager</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Request Leave</title>
     <style>
         body {
             background: #121212;
             color: white;
+            font-family: Arial;
         }
-        .card {
-            background: #1c1c1c;
-            padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        .form-box {
+            max-width: 400px;
+            margin: 80px auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
         }
-        label, select, input, textarea {
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background: #007bff;
             color: white;
+            padding: 12px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
-        select, input, textarea {
-            background: #333;
-            border: 1px solid #444;
+        .msg {
+            margin-top: 10px;
+            font-weight: bold;
         }
-        ::placeholder {
-            color: #bbb;
+        .msg.error {
+            color: #ff4d4d;
         }
-        .btn-success {
-            background-color: #28a745;
-            border-color: #28a745;
+        .msg.success {
+            color: #28a745;
         }
     </style>
 </head>
 <body>
-    <div class="container py-5">
-        <h2 class="my-4 text-center">Request Leave</h2>
-        <div class="card mx-auto" style="max-width: 600px;">
-            <form action="request_leave.php" method="POST">
-                <div class="mb-3">
-                    <label for="leave_type" class="form-label">Leave Type</label>
-                    <select class="form-select" id="leave_type" name="leave_type" required>
-                        <option value="Sick Leave">Sick Leave</option>
-                        <option value="Casual Leave">Casual Leave</option>
-                        <option value="Earned Leave">Earned Leave</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="from_date" class="form-label">From Date</label>
-                    <input type="date" class="form-control" id="from_date" name="from_date" required>
-                </div>
-                <div class="mb-3">
-                    <label for="to_date" class="form-label">To Date</label>
-                    <input type="date" class="form-control" id="to_date" name="to_date" required>
-                </div>
-                <div class="mb-3">
-                    <label for="reason" class="form-label">Reason</label>
-                    <textarea class="form-control" id="reason" name="reason" rows="3" placeholder="Enter leave reason..." required></textarea>
-                </div>
-                <button type="submit" class="btn btn-success w-100">Submit Leave Request</button>
-            </form>
+    <div class="form-box">
+        <h2>Request Leave</h2>
+        <form method="post">
+            <select name="leave_type" required>
+                <option value="Sick">Sick</option>
+                <option value="Casual">Casual</option>
+                <option value="Earned">Earned</option>
+            </select>
+            <input type="date" name="from_date" required />
+            <input type="date" name="to_date" required />
+            <textarea name="reason" placeholder="Reason..." required></textarea>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div class="msg <?= isset($error) ? 'error' : 'success' ?>">
+            <?php if (isset($success)) echo $success; ?>
+            <?php if (isset($error)) echo $error; ?>
         </div>
     </div>
 </body>

@@ -1,44 +1,36 @@
--- Create Database
 CREATE DATABASE IF NOT EXISTS leavemanager;
 USE leavemanager;
 
--- Create User (if not exists)
-CREATE USER IF NOT EXISTS 'leavemanager_user'@'localhost' IDENTIFIED BY 'shreyas';
-
--- Grant permissions
-GRANT ALL PRIVILEGES ON leavemanager.* TO 'leavemanager_user'@'localhost';
-FLUSH PRIVILEGES;
-
--- Create Admin Table
-CREATE TABLE IF NOT EXISTS admin (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(100) NOT NULL,
-    password VARCHAR(255) NOT NULL
-);
-
--- Insert Sample Admin
-INSERT INTO admin (username, password)
-VALUES ('admin', MD5('admin123'));
-
--- Create Employees Table
+-- Employee table
 CREATE TABLE IF NOT EXISTS employee (
     id INT AUTO_INCREMENT PRIMARY KEY,
     emp_name VARCHAR(100) NOT NULL,
-    emp_email VARCHAR(100) NOT NULL,
+    emp_email VARCHAR(100) NOT NULL UNIQUE,
     emp_password VARCHAR(255) NOT NULL,
-    emp_dept VARCHAR(100) NOT NULL,
-    leave_balance INT DEFAULT 10
+    emp_dept VARCHAR(50) NOT NULL,
+    leave_balance INT DEFAULT 10,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Admin table
+CREATE TABLE IF NOT EXISTS admin (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_name VARCHAR(100) NOT NULL,
+    admin_email VARCHAR(100) NOT NULL UNIQUE,
+    admin_password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
--- Create Leave Table
+-- Employee leave requests table
 CREATE TABLE IF NOT EXISTS employee_leave (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    emp_id INT,
-    leave_type VARCHAR(50),
-    from_date DATE,
-    to_date DATE,
+    emp_id INT NOT NULL,
+    leave_type VARCHAR(50) NOT NULL,
+    from_date DATE NOT NULL,
+    to_date DATE NOT NULL,
+    leave_days INT NOT NULL,
     reason TEXT,
-    status VARCHAR(20) DEFAULT 'Pending',
-    FOREIGN KEY (emp_id) REFERENCES employee(id)
+    status ENUM('Pending', 'Approved', 'Rejected') DEFAULT 'Pending',
+    applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (emp_id) REFERENCES employee(id) ON DELETE CASCADE
 );

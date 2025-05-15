@@ -1,53 +1,50 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+include '../db_connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $username = $_POST['username'];
-    $password = md5($_POST['password']);  // Password stored as MD5
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $password = md5($_POST['password']); // md5 as per your existing DB
 
-    $stmt = $conn->prepare("SELECT * FROM admin WHERE username = ? AND password = ?");
-    $stmt->bind_param("ss", $username, $password);
+    $stmt = $conn->prepare("SELECT * FROM admin WHERE admin_email=? AND admin_password=?");
+    $stmt->bind_param("ss", $email, $password);
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if ($result->num_rows === 1) {
-        $admin = $result->fetch_assoc();
-        $_SESSION['admin_id'] = $admin['id'];
-        $_SESSION['admin_username'] = $admin['username'];
+    if ($result->num_rows == 1) {
+        $_SESSION['admin_logged_in'] = true;
         header("Location: dashboard.php");
         exit();
     } else {
-        $_SESSION['error'] = "Invalid username or password.";
-        header("Location: login.php");
-        exit();
+        $error = "Invalid Email or Password";
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Admin Login</title>
+<meta charset="UTF-8" />
+<title>Admin Login</title>
+<style>
+    body { background: #121212; color: white; font-family: Arial, sans-serif; }
+    .container { max-width: 400px; margin: 80px auto; padding: 30px; background: #222; border-radius: 8px; }
+    input[type="email"], input[type="password"] { width: 100%; padding: 12px; margin: 10px 0; border-radius: 5px; border: none; }
+    button { background: #007bff; color: white; padding: 12px; border: none; width: 100%; cursor: pointer; border-radius: 5px; font-size: 16px; }
+    button:hover { background: #0056b3; }
+    .error { color: #f44336; margin-top: 10px; }
+    h2 { text-align: center; }
+</style>
 </head>
 <body>
+<div class="container">
     <h2>Admin Login</h2>
-
-    <?php
-    if (isset($_SESSION['error'])) {
-        echo "<p style='color:red'>" . $_SESSION['error'] . "</p>";
-        unset($_SESSION['error']);
-    }
-    ?>
-
-    <form method="POST" action="">
-        <label>Username:</label><br>
-        <input type="text" name="username" required><br><br>
-
-        <label>Password:</label><br>
-        <input type="password" name="password" required><br><br>
-
-        <input type="submit" value="Login">
+    <form method="post">
+        <input type="email" name="email" placeholder="Admin Email" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <button type="submit">Login</button>
+        <?php if (isset($error)) echo "<div class='error'>$error</div>"; ?>
     </form>
+</div>
 </body>
 </html>

@@ -1,20 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leave Manager - Welcome</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="includes/styles.css">
+    <title>Leave Manager</title>
+    <style>
+        body {
+            background: #121212;
+            color: white;
+            text-align: center;
+            font-family: Arial;
+            padding-top: 100px;
+        }
+        a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        a:hover {
+            background: #0056b3;
+        }
+    </style>
 </head>
 <body>
-  <div class="container text-center">
-    <div class="card mx-auto" style="max-width: 500px;">
-      <h2>Welcome to Leave Manager</h2>
-      <a href="admin/login.php" class="btn btn-primary mb-3">Admin Login</a>
-      <a href="employee/login.php" class="btn btn-success mb-3">Employee Login</a>
-      <a href="employee/register.php" class="btn btn-warning">New Employee? Register</a>
-    </div>
-  </div>
+    <h1>Welcome to Leave Management System</h1>
+    <a href="admin/login.php">Admin Login</a>
+    <a href="employee/login.php">Employee Login</a>
+    <a href="employee/register.php">Register Employee</a> <!-- 👈 New Link Added -->
 </body>
 </html>
