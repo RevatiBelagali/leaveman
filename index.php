@@ -56,7 +56,7 @@
 </head>
 <body>
     <h1>Welcome to LeaveManager</h1>
-    <a href="admin/login.php" class="btn">Manager Login</a>
+    <a href="admin/login.php" class="btn">Malik Login</a>
     <a href="employee/login.php" class="btn">Employee Login</a>
     <a href="employee/register.php" class="btn">Register Employee</a>
 </body>
