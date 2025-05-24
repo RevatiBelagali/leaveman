@@ -24,11 +24,9 @@ jobs:
 
     - name: Deploy to EC2 via SSH
       run: |
-         ssh -i ~/.ssh/github-actions ubuntu@leavemanager.duckdns.org << 'EOF'
+        ssh -i ~/.ssh/github-actions ubuntu@leavemanager.duckdns.org << 'EOF'
           cd /var/www/html
-           git reset --hard
-           git pull origin main
-            sudo systemctl restart apache2
-          EOF
-
-
+          git reset --hard
+          git pull origin main
+          sudo systemctl restart apache2
+EOF
