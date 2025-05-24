@@ -57,7 +57,7 @@
 <body>
     <h1>Welcome to LeaveManager</h1>
     <a href="admin/login.php" class="btn">Admin Login</a>
-    <a href="employee/login.php" class="btn">Mazdoor Login</a>
+    <a href="employee/login.php" class="btn">Maz Login</a>
     <a href="employee/register.php" class="btn">Register Employee</a>
 </body>
 </html>
