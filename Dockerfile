@@ -1,11 +1,17 @@
 # Use official PHP Apache image
 FROM php:7.4-apache
 
-# Copy your app source code into Apache web root
-COPY . /var/www/html/
+# Set working directory to avoid copying system files
+WORKDIR /var/www/html
 
-# Enable Apache mod_rewrite if your app needs it
+# Copy only needed files
+COPY . .
+
+# Enable Apache mod_rewrite
 RUN a2enmod rewrite
 
-# Expose port 80 inside container (default)
+# Clean up apt cache if you add apt packages later (good habit)
+# RUN apt update && apt install -y <packages> && rm -rf /var/lib/apt/lists/*
+
+# Expose port 80
 EXPOSE 80
